@@ -8,7 +8,7 @@
     "test": "mocha test/*.test.js",
     "coverage": "nyc --reporter=html mocha test/*.test.js",
     "docs": "javadoc -i src/*.js test/*.test.js -o README.md -f markdown",
-    "upload": "source dev/gitano.sh && gitanoaddfile README.md package.json npm-shrinkwrap.json src/* test/* build/* dev/* && gitanopush"
+    "upload": "bash ./dev/upload.sh"
   },
   "keywords": [],
   "author": "",
