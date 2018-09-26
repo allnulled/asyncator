@@ -1,6 +1,6 @@
 {
   "name": "asyncator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Class to easily play with asynchronous tasks through member methods, for browser and Node.js.",
   "main": "dist/asyncator.js",
   "scripts": {
