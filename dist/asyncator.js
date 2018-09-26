@@ -1,10 +1,10 @@
-(function(e, t) {
+(function(e, n) {
     if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-        module.exports = t;
+        module.exports = n;
     } else if (typeof define === "function" && typeof define.amd !== "undefined") {
-        define([], () => t);
+        define([], () => n);
     } else {
-        window[e] = t;
+        window[e] = n;
     }
 })("AsyncatorAPI", function() {
     if (typeof async === "undefined") {
@@ -13,57 +13,57 @@
     class e {
         static get Utils() {
             return {
-                turnMethodNamesIntoFunctions: function(e, t) {
-                    var n = undefined;
+                turnMethodNamesIntoFunctions: function(e, n) {
+                    var t = undefined;
                     if (Array.isArray(e)) {
-                        n = [];
+                        t = [];
                         for (var o = 0; o < e.length; o++) {
                             const s = e[o];
                             if (typeof s === "string") {
-                                n[o] = t[s];
+                                t[o] = n[s].bind(n);
                             } else if (typeof s === "function") {
-                                n[o] = s;
+                                t[o] = s;
                             } else throw new Error("Trying to pass " + typeof s + " as a method name");
                         }
                     } else if (typeof e === "object") {
-                        n = {};
+                        t = {};
                         for (var s in e) {
                             const r = e[s];
                             if (typeof r === "string") {
-                                n[r] = t[r];
+                                t[r] = n[r].bind(n);
                             } else if (typeof r === "function") {
-                                n[o] = r;
+                                t[o] = r;
                             } else throw new Error("Trying to pass " + typeof r + " as a method name");
                         }
                     } else throw new Error("Trying to convert " + typeof e + " into asynchronous callbacks");
-                    return n;
+                    return t;
                 }
             };
         }
         constructor(e = {}) {
             Object.assign(this, e);
         }
-        static from(...t) {
-            return new e(...t);
+        static from(...n) {
+            return new e(...n);
         }
         parallel(e) {
-            return new Promise((t, n) => {
+            return new Promise((n, t) => {
                 async.parallel(this.constructor.Utils.turnMethodNamesIntoFunctions(e, this), function(e, o) {
-                    if (e) n(e); else t(o);
+                    if (e) t(e); else n(o);
                 });
             });
         }
         series(e) {
-            return new Promise((t, n) => {
+            return new Promise((n, t) => {
                 async.series(this.constructor.Utils.turnMethodNamesIntoFunctions(e, this), function(e, o) {
-                    if (e) n(e); else t(o);
+                    if (e) t(e); else n(o);
                 });
             });
         }
-        forEach(e, t) {
-            return new Promise((e, t) => {
-                async.forEach(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(n, o) {
-                    if (n) t(n); else e(o);
+        forEach(e, n) {
+            return new Promise((e, n) => {
+                async.forEach(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(t, o) {
+                    if (t) n(t); else e(o);
                 });
             });
         }

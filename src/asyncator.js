@@ -196,7 +196,7 @@ class Asyncator {
           for (var a = 0; a < methodsParam.length; a++) {
             const item = methodsParam[a];
             if (typeof item === "string") {
-              out[a] = base[item];
+              out[a] = base[item].bind(base);
             } else if(typeof item === "function") {
             	out[a] = item;
             } else throw new Error("Trying to pass " + typeof item + " as a method name");
@@ -206,7 +206,7 @@ class Asyncator {
           for (var p in methodsParam) {
             const item = methodsParam[p];
             if (typeof item === "string") {
-              out[item] = base[item];
+              out[item] = base[item].bind(base);
             } else if(typeof item === "function") {
             	out[a] = item;
             } else throw new Error("Trying to pass " + typeof item + " as a method name");

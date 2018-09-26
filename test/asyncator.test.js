@@ -90,11 +90,32 @@ describe("Asyncator class", function() {
       .then(success)
       .catch(error);
   });
-/*
-  it("works great Asyncator#forEach(data, method)", function(done) {
+
+  it("lets the tasks defined as methods to access to the Asyncator instance that is dispatching the asynchronous tasks", function(doneTest) {
     // @TODO:
-    this.timeout(8000);
-    done();
+    const asyncator = Asyncator
+      .from({
+        state: {
+          index: 0,
+          items: [],
+          itemsToAdd: [1, 2, 3, 4, 5]
+        },
+        addItem: function(done) {
+          var index = this.state.index++;
+          this.state.items.push(this.state.itemsToAdd.shift());
+          done(null, index + 10);
+        }
+      });
+    asyncator
+      .series(["addItem", "addItem", "addItem", "addItem", "addItem"])
+      .then((data) => {
+        expect(data).to.deep.equal([10, 11, 12, 13, 14]);
+        expect(asyncator.state.index).to.equal(5);
+        expect(asyncator.state.items).to.deep.equal([1, 2, 3, 4, 5]);
+        expect(asyncator.state.itemsToAdd).to.deep.equal([]);
+        doneTest();
+      })
+      .catch((error) => console.log(error));
   });
-//*/
+
 });
