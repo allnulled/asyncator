@@ -1,0 +1,27 @@
+{
+  "name": "asyncator",
+  "version": "1.0.0",
+  "description": "Class to easily play with asynchronous tasks through member methods, for browser and Node.js.",
+  "main": "dist/asyncator.js",
+  "scripts": {
+    "build": "js-export -i src/asyncator.js -o dist/asyncator.js",
+    "test": "mocha test/*.test.js",
+    "coverage": "nyc --reporter=html mocha test/*.test.js",
+    "docs": "javadoc -i src/*.js test/*.test.js -o README.md -f markdown",
+    "upload": "source dev/gitano.sh && gitanoaddfile README.md package.json npm-shrinkwrap.json src/* test/* build/* dev/* && gitanopush"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "execute-command-sync": "^1.0.2",
+    "javadoc": "^1.0.3",
+    "js-exporter": "^1.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1"
+  },
+  "dependencies": {
+    "async": "^2.6.1"
+  }
+}
