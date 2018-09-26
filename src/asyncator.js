@@ -71,7 +71,92 @@ if (typeof async === "undefined") {
  * will be replaced by the method of that Asyncator instance with that  
  * same name.
  * 
- * ## 4. Commands
+ * ## 4. API Reference
+ * 
+ * ----
+ * 
+ * #### `AsyncatorAPI = require("asyncator")`
+ * 
+ * @type `{Object}`
+ * @description Object that contains the whole `Asyncator` API.
+ * Note that in browser environments, this object is accessible
+ * via the global `window.AsyncatorAPI`, while in Node.js you 
+ * need to import the `asyncator` node_module to have access to 
+ * it.
+ * 
+ * ----
+ * 
+ * #### `Asyncator = AsyncatorAPI.Asyncator`
+ * 
+ * @type `{Class}`
+ * @description Main class of the API. This class is used to define the
+ * asycnhronous operations we want to have access to as member methods
+ * that do asynchronous tasks (as [`async` node module]()) expects.
+ * 
+ * ----
+ * 
+ * #### `new Asyncator(Object:propsAndMethods = {})`
+ * 
+ * @type `{Class constructor}`
+ * @description It creates new `Asyncator` instances. You pass an object 
+ * with all the new properties and methods you want the class to have, 
+ * and it will add them to the instance itself. The same can be done 
+ * through the static method `Asyncator.from(...)`, where the same passed
+ * parameters are passed to the class constructor too.
+ * @parameter `{Object} propsAndMethods`. Object containing all the 
+ * properties and methods to be added to the current `Asyncator` instance.
+ * @returns `{Object:Asyncator}`
+ * 
+ * ----
+ * 
+ * #### `Asyncator#series(Object|Array:methodNamesAndFunctions = {})`
+ * 
+ * @type `{Member method}`
+ * @description It runs multiple tasks in serie. You can provide functions as 
+ * [`async` node_module](https://www.npmjs.com/package/async) expects, or
+ * strings referring to member method names (that are defined as `async` 
+ * node_module functions.
+ * @parameter `{Object | Array} methodNamesAndFunctions`. Array or object
+ * of strings (with names of member methods) or functions (that must work 
+ * well for [`async` node_module](https://www.npmjs.com/package/async))
+ * containing the callbacks of the current asynchronous operation.
+ * Note that you can pass objects or arrays. This is because `async.series(...)` 
+ * node_module method can receive any of them, and when the success callback
+ * is called, the data is returned in the same format and with the same 
+ * keys, either object or array.
+ * @returns `{Object:Promise}`. Once you call this method, you can set
+ * the `success` and `error` callbacks of a typical [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+ * @example This is an example:
+ * 
+ * ```js
+ * Asyncator
+ *   .from({a: (done) => done(null, 50)})
+ *   .series({a: "a"})
+ *   .then((data) => console.log(data.a + " is 50"))
+ *   .catch((error) => console.log("There were errors:", error))
+ * ```
+ * 
+ * This is another example, but with arrays now:
+ * 
+ * ```js
+ * Asyncator
+ *   .from({a: (done) => done(null, 50)})
+ *   .series(["a"])
+ *   .then((data) => console.log(data[0] + " is 50"))
+ *   .catch((error) => console.log("There were errors:", error))
+ * ```
+ * 
+ * ----
+ * 
+ * #### `Asyncator#parallel(Object|Array:methodNamesAndFunctions = {})`
+ * 
+ * @type `{Member method}`
+ * @description It works exactly the same as `Asyncator#series(...)`, but 
+ * instead of running the tasks in serie, they are run parallelly.
+ * @parameter `{Object | Array} methodNamesAndFunctions`. The same as `Asyncator#series`.
+ * @returns `{Object:Promise}`. The same as `Asyncator#series`.
+ * 
+ * ## 5. Commands
  * 
  * #### 1. To build the project source code:
  * 
@@ -89,7 +174,7 @@ if (typeof async === "undefined") {
  * 
  * ~$ `npm run coverage`
  * 
- * ## 5. Conclusion
+ * ## 6. Conclusion
  * 
  * Simple class to ease the asynchronous code of your programs.
  * 
