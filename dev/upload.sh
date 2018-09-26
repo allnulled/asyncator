@@ -1,6 +1,8 @@
 DIR="$(dirname ${BASH_SOURCE[0]})"
 cd $DIR
 cd ..
+npm run test
+npm shrinkwrap
 npm run docs
 npm run build
 source ./dev/gitano.sh
