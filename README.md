@@ -169,6 +169,46 @@ instead of running the tasks in serie, they are run parallelly.
 
 **Returns:** `{Object:Promise}`. The same as `Asyncator#series`.
 
+----
+
+#### `Asyncator#get(String:properties, Any:defaultValue=undefined, String|RegExp:separator="." )`
+
+
+**Type:** `{Member method}`
+
+**Description:** It retrieves property values from the `Asyncator` instance 
+easierly, or returns the `defaultValue`, and using the `separator` to 
+separate the name of each property. So, for example, if I wanted to get
+a value placed in `asyncator.my.inner.properties.firstProperty`, all you 
+need to do is: 
+
+```js
+asyncator.get("my/inner/properties/firstProperty", 800, "/");
+```
+
+Or simply: 
+
+```js
+asyncator.get("my.inner.properties.firstProperty"). 
+```
+
+Both codes will do the same, except that the first, if it cannot 
+retrieve the specified property, it will return `800`.
+
+
+**Parameter:** `{String} properties`. Name of the keys we want to access to 
+retrieve our value, separated, by default, by a ".". The `separator` 
+parameter dictates which character should split the names.
+
+**Parameter:** `{Any} defaultValue`. When there are problems to retrieve
+the specified property, it will return this value.
+
+**Parameter:** `{String|RegExp} separator`. Used by `String#split(~)` to
+separate the provided names of properties.
+
+**Returns:** `{Any}`. It returns the retrieved property, or the `defaultValue` 
+provided.
+
 ## 5. Commands
 
 #### 1. To build the project source code:
