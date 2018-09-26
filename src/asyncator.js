@@ -29,6 +29,8 @@ if (typeof async === "undefined") {
  * const { Asyncator } = AsyncatorAPI;
  * ```
  * 
+ * Note: in browser environments, you need to load [`async` library](https://www.npmjs.com/package/async) before `Asyncator` class.
+ * 
  * #### b) Via Node.js:
  * 
  * ```js
