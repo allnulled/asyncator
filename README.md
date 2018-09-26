@@ -63,8 +63,8 @@ asyncSet
  .catch((error) => console.log("Error"));
 ```
 
-Note that if you pass a string instead of a function as the task, it
-will be replaced by the method of that Asyncator instance with that  
+**Note:** if you pass a string instead of a function as the task, it
+will be replaced by the method of that `Asyncator` instance with that
 same name.
 
 ## 4. API Reference
