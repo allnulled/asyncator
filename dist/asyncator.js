@@ -18,22 +18,22 @@
                     if (Array.isArray(e)) {
                         t = [];
                         for (var o = 0; o < e.length; o++) {
-                            const s = e[o];
-                            if (typeof s === "string") {
-                                t[o] = n[s].bind(n);
-                            } else if (typeof s === "function") {
-                                t[o] = s;
-                            } else throw new Error("Trying to pass " + typeof s + " as a method name");
-                        }
-                    } else if (typeof e === "object") {
-                        t = {};
-                        for (var s in e) {
-                            const r = e[s];
+                            const r = e[o];
                             if (typeof r === "string") {
-                                t[r] = n[r].bind(n);
+                                t[o] = n[r].bind(n);
                             } else if (typeof r === "function") {
                                 t[o] = r;
                             } else throw new Error("Trying to pass " + typeof r + " as a method name");
+                        }
+                    } else if (typeof e === "object") {
+                        t = {};
+                        for (var r in e) {
+                            const s = e[r];
+                            if (typeof s === "string") {
+                                t[s] = n[s].bind(n);
+                            } else if (typeof s === "function") {
+                                t[o] = s;
+                            } else throw new Error("Trying to pass " + typeof s + " as a method name");
                         }
                     } else throw new Error("Trying to convert " + typeof e + " into asynchronous callbacks");
                     return t;
@@ -46,6 +46,17 @@
         static from(...n) {
             return new e(...n);
         }
+        get(e, n = undefined, t = ".") {
+            var o = this;
+            const r = e.split(t);
+            for (var s = 0; s < r.length; s++) {
+                const e = r[s];
+                if (e in o) {
+                    o = o[e];
+                } else return n;
+            }
+            return o;
+        }
         parallel(e) {
             return new Promise((n, t) => {
                 async.parallel(this.constructor.Utils.turnMethodNamesIntoFunctions(e, this), function(e, o) {
@@ -57,13 +68,6 @@
             return new Promise((n, t) => {
                 async.series(this.constructor.Utils.turnMethodNamesIntoFunctions(e, this), function(e, o) {
                     if (e) t(e); else n(o);
-                });
-            });
-        }
-        forEach(e, n) {
-            return new Promise((e, n) => {
-                async.forEach(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(t, o) {
-                    if (t) n(t); else e(o);
                 });
             });
         }

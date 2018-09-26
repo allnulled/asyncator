@@ -118,4 +118,41 @@ describe("Asyncator class", function() {
       .catch((error) => console.log(error));
   });
 
+  it("works great for Asyncator#get(properties, defaultValue, splitter)", function(doneTest) {
+    const asyncator = Asyncator
+      .from({
+        colorsRetrieved: [],
+        colors: {
+          primary: {
+            red: "F00",
+            blue: "00F",
+            yellow: "FF0",
+          },
+          secondary: {
+            green: "0F0",
+            orange: "FA0",
+            purple: "F0F",
+          }
+        },
+        retrieveColors: function(done) {
+          const yellow = this.get("colors.primary.yellow");
+          const red = this.get("colors.primary.red");
+          const blue = this.get("colors.primary.blue");
+          const green = this.get("colors.secondary.green");
+          const orange = this.get("colors.secondary.orange");
+          const purple = this.get("colors.secondary.purple");
+          const none = this.get("xxx", 800);
+          this.colorsRetrieved = [yellow, red, blue, green, orange, purple];
+          done();
+        }
+      });
+    asyncator
+      .series(["retrieveColors"])
+      .then(data => {
+        expect(asyncator.colorsRetrieved).to.deep.equal(["FF0", "F00", "00F", "0F0", "FA0", "F0F"]);
+        doneTest();
+      })
+      .catch((error) => console.log(error))
+  });
+
 });

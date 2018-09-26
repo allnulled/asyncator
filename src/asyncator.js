@@ -1,6 +1,5 @@
 // >> export module to AsyncatorAPI
 
-
 if (typeof async === "undefined") {
   async = require("async");
 }
@@ -192,23 +191,23 @@ class Asyncator {
       turnMethodNamesIntoFunctions: function(methodsParam, base) {
         var out = undefined;
         if (Array.isArray(methodsParam)) {
-        	out = [];
+          out = [];
           for (var a = 0; a < methodsParam.length; a++) {
             const item = methodsParam[a];
             if (typeof item === "string") {
               out[a] = base[item].bind(base);
-            } else if(typeof item === "function") {
-            	out[a] = item;
+            } else if (typeof item === "function") {
+              out[a] = item;
             } else throw new Error("Trying to pass " + typeof item + " as a method name");
           }
         } else if (typeof methodsParam === "object") {
-        	out = {};
+          out = {};
           for (var p in methodsParam) {
             const item = methodsParam[p];
             if (typeof item === "string") {
               out[item] = base[item].bind(base);
-            } else if(typeof item === "function") {
-            	out[a] = item;
+            } else if (typeof item === "function") {
+              out[a] = item;
             } else throw new Error("Trying to pass " + typeof item + " as a method name");
           }
         } else throw new Error("Trying to convert " + typeof methodsParam + " into asynchronous callbacks");
@@ -225,6 +224,18 @@ class Asyncator {
     return new Asyncator(...args);
   }
 
+  get(properties, defaultValue = undefined, separator = ".") {
+    var last = this;
+    const props = properties.split(separator);
+    for (var a = 0; a < props.length; a++) {
+      const prop = props[a];
+      if (prop in last) {
+        last = last[prop];
+      } else return defaultValue;
+    }
+    return last;
+  }
+
   parallel(methodsParam) {
     return new Promise((resolve, reject) => {
       async.parallel(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(error, args) {
@@ -237,15 +248,6 @@ class Asyncator {
   series(methodsParam) {
     return new Promise((resolve, reject) => {
       async.series(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(error, args) {
-        if (error) reject(error);
-        else resolve(args);
-      });
-    });
-  }
-
-  forEach(data, methodParam) {
-  	return new Promise((resolve, reject) => {
-      async.forEach(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(error, args) {
         if (error) reject(error);
         else resolve(args);
       });
