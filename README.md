@@ -61,6 +61,14 @@ asyncSet
  .series(["a","b","c", (done) => setTimeout(done, 1000)])
  .then((data) => console.log("Ok..."))
  .catch((error) => console.log("Error"));
+
+asyncSet
+ .each(["hola","que","tal"], (value, key, done) => {
+   console.log("Item:", item);
+   done();
+ })
+ .then((data) => console.log("Ok..."))
+ .catch((error) => console.log("Error"));
 ```
 
 **Note:** if you pass a string instead of a function as the task, it
@@ -208,6 +216,27 @@ separate the provided names of properties.
 
 **Returns:** `{Any}`. It returns the retrieved property, or the `defaultValue` 
 provided.
+
+#### `Asyncator#mapSeries(Object|Array:items, String|Function:iterator)`
+
+
+**Type:** `{Member method}`
+
+**Description:** It maps an iterable piece of data (`Object` or `Array`) through
+an asynchronous iterator callback, or the name of a member method (which is 
+coded as an async)
+
+**Parameter:** `{Object | Array} items`. The piece of data you want to iterate.
+
+**Parameter:** `{Function} callback`. The asynchronous iterator applied for each item.
+The callback works exactly as the typical `async` callbacks.
+
+**Returns:** `{Object:Promise}`. The same as `Asyncator#series` or `Asyncator#parallel`.
+
+
+
+
+
 
 ## 5. Commands
 

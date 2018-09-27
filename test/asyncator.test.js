@@ -155,4 +155,62 @@ describe("Asyncator class", function() {
       .catch((error) => console.log(error))
   });
 
+  it("works great for Asyncator#mapParallel(items, iterator)", function(doneTest) {
+    this.timeout(8000);
+    const dataInTime = [];
+    Asyncator
+      .from({
+        logData: function(item, done) {
+          setTimeout(() => {
+            dataInTime.push(item.id);
+            done(null, item.id);
+          }, item.time);
+        }
+      }).mapParallel([{
+        id: 0,
+        time: 3000,
+      }, {
+        id: 1,
+        time: 2000,
+      }, {
+        id: 2,
+        time: 1000,
+      }], "logData")
+      .then((data) => {
+        expect(dataInTime).to.deep.equal([2,1,0]);
+        expect(data).to.deep.equal([0,1,2]);
+        doneTest();
+      })
+      .catch(console.log);
+  });
+
+  it("works great for Asyncator#mapSeries(items, iterator)", function(doneTest) {
+    this.timeout(8000);
+    const dataInTime = [];
+    Asyncator
+      .from({
+        logData: function(item, done) {
+          setTimeout(() => {
+            dataInTime.push(item.id);
+            done(null, item.id);
+          }, item.time);
+        }
+      }).mapSeries([{
+        id: 0,
+        time: 3000,
+      }, {
+        id: 1,
+        time: 2000,
+      }, {
+        id: 2,
+        time: 1000,
+      }], "logData")
+      .then((data) => {
+        expect(dataInTime).to.deep.equal([0,1,2]);
+        expect(data).to.deep.equal([0,1,2]);
+        doneTest();
+      })
+      .catch(console.log);
+  });
+
 });

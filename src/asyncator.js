@@ -66,6 +66,14 @@ if (typeof async === "undefined") {
  *   .series(["a","b","c", (done) => setTimeout(done, 1000)])
  *   .then((data) => console.log("Ok..."))
  *   .catch((error) => console.log("Error"));
+ * 
+ * asyncSet
+ *   .each(["hola","que","tal"], (value, key, done) => {
+ *     console.log("Item:", item);
+ *     done();
+ *   })
+ *   .then((data) => console.log("Ok..."))
+ *   .catch((error) => console.log("Error"));
  * ```
  * 
  * **Note:** if you pass a string instead of a function as the task, it
@@ -191,6 +199,22 @@ if (typeof async === "undefined") {
  * @returns `{Any}`. It returns the retrieved property, or the `defaultValue` 
  * provided.
  * 
+ * #### `Asyncator#mapSeries(Object|Array:items, String|Function:iterator)`
+ * 
+ * @type `{Member method}`
+ * @description It maps an iterable piece of data (`Object` or `Array`) through
+ * an asynchronous iterator callback, or the name of a member method (which is 
+ * coded as an async)
+ * @parameter `{Object | Array} items`. The piece of data you want to iterate.
+ * @parameter `{Function} callback`. The asynchronous iterator applied for each item.
+ * The callback works exactly as the typical `async` callbacks.
+ * @returns `{Object:Promise}`. The same as `Asyncator#series` or `Asyncator#parallel`.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  * ## 5. Commands
  * 
  * #### 1. To build the project source code:
@@ -283,6 +307,36 @@ class Asyncator {
     return new Promise((resolve, reject) => {
       async.series(this.constructor.Utils.turnMethodNamesIntoFunctions(methodsParam, this), function(error, args) {
         if (error) reject(error);
+        else resolve(args);
+      });
+    });
+  }
+
+  mapParallel(items, iteratorParam) {
+    var iterator = undefined;
+    if (typeof iteratorParam === "string") {
+      iterator = this[iteratorParam];
+    } else if (typeof iteratorParam === "function") {
+      iterator = iteratorParam;
+    } else throw new Error("Trying to pass " + typeof iteratorParam + " as asynchronous iterator callback (only strings or functions)");
+    return new Promise((resolve, reject) => {
+      async.map(items, iterator, function(error, args) {
+        if (error) reject(error)
+        else resolve(args);
+      });
+    });
+  }
+
+  mapSeries(items, iteratorParam) {
+    var iterator = undefined;
+    if (typeof iteratorParam === "string") {
+      iterator = this[iteratorParam];
+    } else if (typeof iteratorParam === "function") {
+      iterator = iteratorParam;
+    } else throw new Error("Trying to pass " + typeof iteratorParam + " as asynchronous iterator callback (only strings or functions)");
+    return new Promise((resolve, reject) => {
+      async.mapSeries(items, iterator, function(error, args) {
+        if (error) reject(error)
         else resolve(args);
       });
     });
