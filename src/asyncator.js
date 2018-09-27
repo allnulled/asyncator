@@ -204,10 +204,23 @@ if (typeof async === "undefined") {
  * @type `{Member method}`
  * @description It maps an iterable piece of data (`Object` or `Array`) through
  * an asynchronous iterator callback, or the name of a member method (which is 
- * coded as an async)
+ * coded as an `async` function). The iteration is made one after the other.
  * @parameter `{Object | Array} items`. The piece of data you want to iterate.
  * @parameter `{Function} callback`. The asynchronous iterator applied for each item.
- * The callback works exactly as the typical `async` callbacks.
+ * The callback works exactly as the typical `async` callbacks, but receiving the item 
+ * which is iterated before the `done` callback
+ * @returns `{Object:Promise}`. The same as `Asyncator#series` or `Asyncator#parallel`.
+ * 
+ * #### `Asyncator#mapParallel(Object|Array:items, String|Function:iterator)`
+ * 
+ * @type `{Member method}`
+ * @description It maps an iterable piece of data (`Object` or `Array`) through
+ * an asynchronous iterator callback, or the name of a member method (which is 
+ * coded as an `async` function). The iteration is made in parallel.
+ * @parameter `{Object | Array} items`. The piece of data you want to iterate.
+ * @parameter `{Function} callback`. The asynchronous iterator applied for each item.
+ * The callback works exactly as the typical `async` callbacks, but receiving the item 
+ * which is iterated before the `done` callback.
  * @returns `{Object:Promise}`. The same as `Asyncator#series` or `Asyncator#parallel`.
  * 
  * 
